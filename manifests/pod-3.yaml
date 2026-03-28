@@ -1,0 +1,15 @@
+---
+#apiVersion will tell which kubernetes apiVersion we are using
+apiVesrion: v1
+#kind will tell the type of resource
+kind: Pod
+#metadata is of object type which used to add labels
+metadata:
+  name: alp-container
+#spec is of object type we define the actual configuration
+spec:
+  #containers is of type array
+  containers:
+    - name: alp
+      #here we are using image as alpine which doesnot have any CMD or ENTRYPOINT because its an operatin system ,so kubernetes will keep on restarting the pod because by default restartPolicy is Always and pod moves to CrashloopBackoff state
+      image: alpine
