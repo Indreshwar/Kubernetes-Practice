@@ -1,0 +1,16 @@
+---
+#which kubernetes apiversion we are using
+apiVersion: v1
+#kind will tell type of resource we are using
+kind: Pod
+#metadat is of type object and used to add labels 
+metadata:
+  name: web-app
+#spec is of type object we define the actual configurations
+spec:
+  #containers is of type array
+  containers:
+    - name: nginx1
+      image: nginx
+      ports:
+        - containerPort: 80
