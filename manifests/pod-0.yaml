@@ -1,0 +1,15 @@
+---
+#apiVersion will tell which kubernetes apiversion to use
+apiVersion: v1
+#kind will tell type of kubenetes object we are using
+kind: Pod
+#metadata is of type object to add labels
+metadata:
+  name: hello-Pod
+#spec is of type object will define the actual configuration
+spec:
+  #containers is of type array
+  containers:
+    - name: hello
+      image: nginx
+
