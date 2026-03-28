@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alp-pod
+spec:
+  containers:
+    - name: alp-container
+      image: alpine
+      #args is of type array used when we need to pass CMD
+      args:
+        - sleep 
+        - 1d
