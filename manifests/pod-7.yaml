@@ -1,0 +1,39 @@
+---
+#apiversion will tell which kubernetes apiVersion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide identifying information
+metadata:
+  name: one
+  #labels is of tpe object labels(label is like tag (key-value pair))
+  labels:
+    app: nginx
+    env: dev
+    project: learning
+#spec is of type object we define the actual configuration
+spec:
+  #containers is of type array
+  containers:
+    - name: web
+      image: nginx
+
+---
+#apiversion will tell which kubernetes apiVersion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide identifying information
+metadata:
+  name: two
+  #labels is of tpe object labels(label is like tag (key-value pair))
+  labels:
+    app: nginx
+    env: sit
+    project: learning
+#spec is of type object we define the actual configuration
+spec:
+  #containers is of type array
+  containers:
+    - name: web
+      image: nginx
