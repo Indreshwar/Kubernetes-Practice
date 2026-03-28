@@ -1,0 +1,34 @@
+---
+#apiversion will tell which kubernetes apiVersion to use
+apiVersion: v1
+#kind will tell the type of resource
+kind: Pod
+#metadata is of type object used to provide identifying information of kubernentes objects
+metadata:
+  name: one
+  #labels is of type object to add tags and lables identified by kubernetes 
+  labels:
+    app: web
+    dev: dev
+    project: annotations
+  #annotations is of type object and these are not identified by kubernetes which used by thord party tools
+  annotations:
+    branch: main
+    prometheus.io/path: /metrics
+    prometheus.io/port: "9102"
+#spec is of type object where we define the actual configuration
+spec:
+  #containers is of type array
+  containers:
+    - name: web
+      image: nginx
+      #resources is of type object used to control the cpu and memory for the containers to request and use
+      resources:
+        #requests is of type object used to give mininmum values
+        requests:
+          cpu: 100m 
+          memory: 128M
+        #limits is of type object used to maximum values
+        limits:
+          cpu: 500m
+          memory: 512M
