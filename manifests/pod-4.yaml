@@ -1,0 +1,24 @@
+---
+#apiVersion will tell which kubernetes apiversion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object to add labels
+metadata:
+  name: mysqldb
+#spec is of object type to define actual configuration
+spec:
+  #containers is of type array 
+  containers:
+    - name: mysql
+      image: mysql:5.7
+      #env is of type array used to pass environment variables
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: devops
+        - name: MYSQL_DATABASE
+          value: nop
+        - name: MYSQL_USER
+          value: devops
+        - name: MYSQL_PASSWORD
+          value: devops
