@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: one
+spec:
+  containers:
+    - name: web
+      image: nginx
+      #resources is of type object which  are used to control how much CPU and memory a container can request and use
+      resources:
+        #requests is of type object which is used to give minimal values (soft limit)
+        requests:
+          #1vpcu =1000m ,ex cpu 500m then cpu=0.5
+          cpu: 100m
+          memory: 128M
+        #limits is of type object which is used to give maximum values(upper limit or hard limit)
+        limits:
+          cpu: 500m
+          memory: 512M
