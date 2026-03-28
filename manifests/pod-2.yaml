@@ -1,0 +1,21 @@
+---
+#apiVersion which kuberentes apiVersion to use
+apiVersion: v1
+#kind will tell type of resource we are using
+kind: Pod
+#metadata is of type object ,used to add labels
+metadata:
+  name: multi-container
+#spec is of type object used to define the actual configuration
+spec:
+  #containers is of type arrary
+  containers:
+    - name: first
+      image: nginx
+    - name: second
+      # here we are using image as alpine which is Operating system so it doesnot have entry point or CMD .so once container created it will exited
+      image: alpine
+      #command of type array , used to when we need to pass ENTRYPOINT
+      command:
+        - sleep
+        - 1d
