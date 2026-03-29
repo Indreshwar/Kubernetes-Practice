@@ -1,0 +1,19 @@
+---
+#apiVersion will tell which kubernetes api version to use
+apiVersion: v1
+#kind will tell the type of resource
+kind: Pod
+#metadata is of type object used to provide identifying information of kubernetes object
+metadata:
+  name: pending-pod 
+#spec is of type object used to provide actual configuration
+spec:
+  #containers is of type array
+  containers:
+    - name: web-app
+      image: nginx
+      #resources is of type object, used how to control the cpu and memory of the containers to rquest and use
+      resources:
+        requests:
+          memory: 100Gi
+      
