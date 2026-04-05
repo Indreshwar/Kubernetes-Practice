@@ -1,0 +1,28 @@
+---
+#apiVersion will tell which kubernetes apiversion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide identifying information of k8s object
+metadata:
+  name: init-pods
+spec:
+  restartPolicy: OnFailure #on failure only the container will be restarted by kubernetes
+  #init1 container is created before the main container gets created
+  initContainers:
+    - name: init1
+      image: alpine
+      args:
+        - sleep
+        - 10s
+  #here once init1 container excuted successfully then only the web container will be created
+  containers:
+    - name: web
+      image: nginx
+      ports:
+        - containerPort: 80
+      #resources is of type object used to control the cpu and memory for the containers to request and use
+      resources:
+        requests: 
+          cpu: 100m
+          memory: 0.5Gi
