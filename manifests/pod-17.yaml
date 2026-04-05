@@ -1,0 +1,37 @@
+---
+#apiVersion will tell which kubernetes apiversion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide the identifying information of k8s object
+metadata:
+  name: multi-init-pods
+#spec is of type object used to define the actual configuration
+spec:
+    restartPolicy: OnFailure #on failure only it will restart the containers
+    #so init containers will be created before the main containers created and this will be created in a serial way i.e one after another
+    initContianers:
+      - name: init1
+        image: alpine
+        args:
+          - sleep
+          - 10s
+      - name: init2
+        image: alpine
+        args:
+          - sleep
+          - 10s
+      - name: init3
+        image: alpine
+        args:
+          - sleep
+          - 10s
+    #containers will be created after the init containers this are excuted parallely
+    containers:
+      - name: webapp1
+        image: nginx
+      - name: webapp2
+        image: alpine
+        args :
+          - sleep
+          - 10s
