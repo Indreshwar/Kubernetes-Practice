@@ -1,0 +1,14 @@
+---
+#apiversion will tell which kubernetes apiversion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide identifying information of kubernetes object
+metadata:
+  name : complete-flow
+#spec is of type object ,where we define the actual configuration
+spec:
+  contianers:
+    - name: web-app
+      image: busybox
+      command: ["sh","-c","sleep 10s"]
