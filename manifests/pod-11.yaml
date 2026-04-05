@@ -1,0 +1,15 @@
+---
+#apiversion will tell which kubernetes version to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide identifying information about kubernetes object
+metadata:
+  name: Failed-pod
+#spec is of type object used to provide the actual configuration
+spec:
+  restartPolicy: Never #here kubernetes willnot restart the container once exited with status as 1 so stauts of container is error and pod is in failed state
+  containers:
+    - name: web
+      image: busybox
+      command: ["sh","-c","exit 1"]
