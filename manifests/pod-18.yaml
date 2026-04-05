@@ -1,0 +1,29 @@
+---
+#apiVersion will tell which k8s apiversion to use
+apiVersion: v1
+#kind: will tell type of resource
+kind: Pod
+#metadata is of type object used to provide the identifying information of k8s object
+metadata:
+  name: init-fail
+#spec is of type object where we define the actual configuration
+spec:
+  #initcontianers will be created before the main containers and they are excuted one by one
+  initContainers:
+    - name: init1
+      image: alpine
+      args:
+        - sleep
+        - 10s
+    - name: init2
+      image: alpine
+      args: ["exit","1"]
+  #main contianers will be created only after the initcontainers but in init2 it is not exited with o so the main will not be created
+  containers:
+    - name: webapp1
+      image: nginx
+    - name: webapp2
+      image: alpine
+      args:
+        - sleep
+        - 10s
