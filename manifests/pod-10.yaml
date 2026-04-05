@@ -1,0 +1,15 @@
+---
+#apiversion will tell which kubernete apiversion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide identifying information of kebernetes objects
+metadata:
+  name : succeded-pod
+#spec is of the object used to provide the actual configuration
+spec:
+  restartPolicy: Never #so here container will get never restrted once exited
+  containers:
+    - name: web
+      image: busybox
+      command: ["sh","-c","echo Hello"]
