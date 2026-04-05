@@ -1,0 +1,15 @@
+---
+#apiVersion will tell which kubernetes apiversion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide identifing information from kubernetes object
+metadata:
+  name: terminated-success
+#spec is of type object ,where actual aconfiguration
+spec:
+  restartPolicy: Never
+  containers:
+     - name : app
+       image: busybox
+       command: ["sh","-c","echo Hello"]
