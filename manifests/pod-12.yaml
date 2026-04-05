@@ -1,0 +1,14 @@
+---
+#apiversion will tell which kubernetes apiversion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide the identifying information of kubernetes object
+metadata: 
+  name: waiting-pod
+#spec is of typ object where actual configuration
+spec:
+  containers:
+    - name: app
+      image: nginx:xyz
+      
