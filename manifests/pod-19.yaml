@@ -1,0 +1,20 @@
+---
+#these are static pods needs to be created on worker nodes of path /etc/kubernetes/manifests
+#apiversion will tell which kubernetes apiversion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide identifiabe information of k8 objects
+metadata:
+  name: nginx-static
+  #labels is of type object used to add tags which are identifiable by k8s 
+  labels:
+    app: nginx
+#spec is of type object where the actual configuration is defined
+spec:
+  #containers is of type array
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
