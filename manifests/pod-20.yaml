@@ -1,0 +1,33 @@
+---
+#apiVersion will tell which kubernetes apiversion to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide identifiable information of K8s object
+metadata:
+  name: multi-container
+  #labels is of type object used to add tags which are identified by kubernetes
+  labels:
+    app: nginx
+    type: webserver
+#spec is of type object used to define the actual configuration
+spec:
+  containers:
+    - name: writer-container
+      image: alpine
+      command: ["/bin/sh"]  #starts a shell
+      args: ["-c","while true; do date >> /var/log/index.html; sleep 5; done"] #infinite loop appends date & time to file
+      #volumeMounts is of type array
+      volumeMounts: 
+        - name: shared-volume
+          mountPath: /var/log # the data in /var/log path is linked(mapped to )shared-volume
+    - name: read-container
+      image: nginx
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - name: shared-volume
+          mountPath: /usr/share/nginx/html
+  volumes:
+    - name: shared-volume
+      emptyDir: {}       
