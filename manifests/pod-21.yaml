@@ -1,0 +1,34 @@
+---
+#apiVersion will tell which k8s api version to use
+apiVersion: v1
+#kind will tell type of resource
+kind: Pod
+#metadata is of type object used to provide identifiable information of K8s resource
+metadata:
+  name: two-containers
+  #labels is of type object used to add tags which are identified by k8s
+  labels:
+    project: multi-containers
+    app: web-app
+#spec is of type object where the actual configuration is defined
+spec:
+  restartPolicy: Never
+  #containers is of type array
+  containers:
+    - name: nginx-containers
+      image: nginx
+      #VolumeMounts is of type array used to mount (i.e replace the path with volume in container)
+      volumeMounts:
+        - name: shared-data
+          mountPath: /usr/share/nginx/html
+    - name: debian-container
+      image: debian
+      volumeMounts:
+        - name: shared-data
+          mountPath: /pod-data
+      command: ["/bin/sh"]
+      args: ["-c","echo Hello-world> /pod-data/index.html"]
+  volumes:
+    - name: shared-data
+      emptyDir: {}
+
