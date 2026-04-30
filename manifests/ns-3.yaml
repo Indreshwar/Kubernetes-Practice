@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: webapp
+  labels:
+    type: ns
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: webapp
+  labels:
+    project: webapp-ns-pod 
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      resources:
+        requests:
+          cpu: 200m
+          memory: 256M
+        limits:
+          cpu: 400m
+          memory: 512M
