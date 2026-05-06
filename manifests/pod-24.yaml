@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: container-1
+spec:
+  containers:
+    - name: my-container
+      image: busybox
+      command: ["/bin/sh"]
+      args: ["-c","echo Hello world ; sleep 1d"]
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+        limits:
+          cpu: 500m
+          memory: 500Mi
+
+#create this pod in healthcare-project namespace where we have set the limit range
