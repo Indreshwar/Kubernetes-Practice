@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: limit-pod
+  namespace: healthcare-project
+spec:
+  containers:
+    - name: limit-pod
+      image: nginx
+      ports:
+        - containerPort: 80
+      resources:
+        limits: 
+          cpu: 500m 
+          memory: 200Mi
