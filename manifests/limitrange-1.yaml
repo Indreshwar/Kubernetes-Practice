@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: limit-mem-cpu-container
+  namespace: healthcare-project
+spec:
+  limits: #limits is of type array used to provide limit cpu ,memory for containers ,pods,volumes
+    - max: #max is of type object used to provide maximum values
+        cpu: "800m"
+        memory: "1Gi"
+      min: #min of type object used ot provide minimum values
+        cpu: "100m"
+        memory: "100Mi"
+      default: #default is of type object used to provide maximum default values
+        cpu: "700m"
+        memory: "900Mi"
+      defaultRequest: # is of type object used to provide minimum default values
+        cpu: "110m"
+        memory: "120Mi"
+      type: Container # is of type string which means to whom we are applying limitrange(containers,pods,volumes)
