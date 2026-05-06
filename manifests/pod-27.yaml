@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: four-containers
+spec: 
+  containers:
+    - name: web-1
+      image: nginx
+      resources: #web-1 containers will take the values which we have given below
+        requests:
+          cpu: "100m"
+          memory: "100Mi"
+        limits:
+          cpu: "500m"
+          memory: "200Mi"
+    - name: web-2
+      image: nginx
+      resources:
+        requests: #web-2 container will take the resources(minimum values) we have given  and for maximum take the values from default(maximum) for which we have given in the limitrange for healthcare-project ns
+          cpu: "300m"
+          memory: "200Mi"
+    - name: web-3
+      image: nginx
+      resources: #web-3 container will take the resources(minimum values) as same as limits (max alues ) we have given below
+        limits: 
+          cpu: "500m"
+          memory: "200Mi"
+    - name: web-4 #web-4 container will take the default & defaultRequest we have give for the limitRange
+      image: nginx
