@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: web-server
+  namespace:  ecomm-project #pod will be created under ecomm-project namespae where we have given resource quota for ecomm-project namespace
+spec: 
+  containers: 
+    - name: web
+      image: nginx
+      resources:
+        limits:
+          cpu: 500m
+          memory: 300Mi
