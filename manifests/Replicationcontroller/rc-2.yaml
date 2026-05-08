@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: demo-rc
+  labels:
+    app: nginx-demo
+    type: rc
+spec:
+  replicas: 3
+  selector:
+    # env: prod Replication controller will support only one selector
+    app: nginx
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        env: prod-env
+        app: nginx
+    spec:
+      containers:
+        - name: write-container
+          image: alpine
+          command: ["/bin/sh"]
+          args: ["-c","while true; do date>>/var/log/index.html;sleep 10s; done"]
+          volumeMounts:
+            - name: shared-data
+              mountPath: /var/log/
+        - name: read-container
+          image: nginx:1.19
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html/
+          ports:
+          - containerPort: 80
+      volumes:
+        - name: shared-data
+          emptyDir: {}
