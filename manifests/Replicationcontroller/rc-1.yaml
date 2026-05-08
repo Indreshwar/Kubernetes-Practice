@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: ReplicationController #ReplicationController is a controller object which ensures the desired number of pods are running
+metadata: #metadata is of type object used to provide indentifiable information about ReplicationController
+  name: nginx-demo-rc
+  labels:
+    app: nginx
+    type: rc-prod
+spec:
+  replicas: 1 #replicas used to specify number of pod will be created under RC
+  selector: #selector is of type object used to match the lables of spec.selector = spec.template.metadata.labels then only the pods will be controlled by RC
+    app: nginx-prod
+  template: #template is of type object that pod will be created 
+    metadata: #metadata is of type object used to provide identifiable information about Pod
+      name: nginx-pod
+      labels:
+        app: nginx-prod #this should be equal to spec.selector then only pods controlled by RC
+    spec: #spec is of type object where Actual configuration is defined
+      containers:
+        - name: nginx
+          image: nginx:1.19
+          ports:
+            - containerPort: 80
+          resources:
+            requests: #minimum values
+              cpu: 100m 
+              memory: 128Mi
+            limits: #maximum values
+              cpu: 500m 
+              memory: 256Mi
+        
+
+  
