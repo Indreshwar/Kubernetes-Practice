@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-demo-rs
+  labels:
+    app: nginx
+    env: prod
+spec:
+  minReadySeconds: 10
+  replicas: 3
+  selector: 
+    matchExpressions: #matchExpressions is of type array 
+      - {key: app, operator: In,values: [nginx]} #values i sof type array
+      - {key: release, operator: In,values: [v1.0,v1.1]}
+  template:
+    metadata:
+      name:  nginx-pod-matchepression 
+      labels:
+        app: nginx
+        release: v1.0
+        env: prod
+    spec:
+      containers:
+        - name: write-container
+          image: alpine
+          command: ["/bin/sh"]
+          args: ["-c","echo Hi Puneeth > /container-data/index.html ; sleep 1d"]
+          volumeMounts:
+            - name: shared-data
+              mountPath: /container-data
+        - name: read-container
+          image: nginx
+          ports: 
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html
+          resources:
+            requests:
+              cpu: 100m 
+              memory: 128Mi
+            limits:
+              cpu: 200m 
+              memory: 256Mi
+      volumes:
+        - name: shared-data
+          emptyDir: {}
