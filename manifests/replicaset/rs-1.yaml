@@ -1,0 +1,57 @@
+---
+#apiVersion will tell which kubernete apiversion to use
+apiVersion: apps/v1
+#kind will tell type of k8s object
+kind: ReplicaSet
+#metadata is of type object used to provide identifying information about k8s object
+metadata:
+  name: nginx-demo-rs
+  #labels is of type object which are used to add tags for the resources identified by k8s
+  labels:
+    app: nginx
+    env: production
+spec:
+  #minReadySeconds - minimum number of seconds for which a newly created pod should be ready without any of its container crashing
+  minReadySeconds: 10
+  #replicas -used for desired number of pods
+  replicas: 2
+  #selector has 2 types matchLables matchExpressions
+  selector:
+    #matchLabels is of type object used to define more than one labels
+    matchLabels: 
+      app: nginx
+      release:  v1.0
+  #template is of type object where define the pod specifications
+  template:
+    metadata:
+      name: nginx-demo-pod
+      labels: #labels should match the selectors.matchLabels to create the pods under Replicaset(controller)
+        app: nginx
+        release: v1.0
+        env: production
+    #spec is of type object used to define actual configuration of pods
+    spec:
+      containers:
+        - name: write-container
+          image: alpine
+          command: ["/bin/sh"]
+          args: ["-c","echo Hello world > /container-data/index.html; sleep 1d"]
+          #volumeMounts is of type array used to mount the volume
+          volumeMounts:
+            - name: shared-data
+              mountPath: /container-data #inside container /container-data will replaces by volume shared-data so shared-data volume contain index.html
+        - name: read-container
+          image: nginx
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html
+          ports:
+            - containerPort: 80
+      volumes:
+        - name: shared-data
+          emptyDir: {}
+
