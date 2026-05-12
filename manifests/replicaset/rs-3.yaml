@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-demo-rs 
+  labels:
+    app: nginx-rs 
+    envi: production
+spec:
+  replicas: 3
+  selector: 
+    matchExpressions: #is of type array
+      - {key: app, operator: In, values: [nginx-prod]} #value is of type array
+      - {key: release, operator: NotIn, values: [v1.0,v1.1]}
+  template:
+    metadata:
+      name: nginx-demo
+      labels:
+        app: nginx-prod
+        release: v1.2
+    spec:
+      containers:
+        - name: writer-container
+          image: alpine
+          command: ["/bin/sh"]
+          args: ["-c","echo Hello world > /container-data/index.html; sleep 1d"]
+          volumeMounts:
+            - name: shared-data
+              mountPath: /container-data
+        - name: read-container
+          image: nginx
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: shared-data
+          emptyDir: {}
