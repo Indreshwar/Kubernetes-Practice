@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+  labels:
+    app: nginx
+    env: test
+spec:
+  minReadySeconds: 10
+  replicas: 3
+  selector: #if we are using both matchLabels & matchExpressions then both should match labels of pod teplate if any one is missing we cannot create
+    matchLabels:
+      env: test
+    matchExpressions:
+      - {key: app,operator: In,values: [nginx]}
+      - {key: release,operator: NotIn,values: [v1.0,v1.1]}
+  template:
+    metadata:
+      name: nginx-test-pod
+      labels:
+        app: nginx
+        release: v1.2
+        env: test
+    spec:
+      containers:
+        - name: write-container
+          image: alpine
+          command: ["/bin/sh"]
+          args: ["-c","echo Hello Kubernetes > /pod-data/index.html ; sleep 1d"]
+          volumeMounts:
+            - name: shared-data
+              mountPath: /pod-data
+        - name: read-container
+          image: nginx
+          ports: 
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html
+          resources:
+            limits:
+              cpu: 200m 
+              memory: 256Mi
+      volumes:
+        - name: shared-data
+          emptyDir: {}
