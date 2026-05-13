@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-probe
+  labels:
+    app: nginx
+    env: prod
+    release: v1.0
+spec:
+  containers:
+    - name: live-container
+      image: nginx
+      ports: 
+        - containerPort: 80
+          hostPort: 8080
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      #livenessProbe is of type obejct , determines whether the application in the container is started correctly or not
+      livenessProbe:
+        #httpGet is of type object which is one of the probecheck for sending http request
+        httpGet:
+          path: / # here /(root Path) -> refers to /usr/share/nginx/html (path to access on the http server)
+          port: 80
+#here livenessprobe will start checking on path / & port 80 whether the app is running or not ,once the pod & container is up only
