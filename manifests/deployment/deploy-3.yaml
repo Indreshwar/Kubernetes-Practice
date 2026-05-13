@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-demo-deploy 
+  labels:
+    app: nginx-deploy 
+    type: deploy
+    envi: production
+spec:
+  replicas: 4
+  selector: 
+    matchLabels: 
+      env: production
+  strategy: #startegy by default is rolling update with both values to 25% here we changed to 50%
+    rollingUpdate:
+      maxSurge: 50% #first surge will create 2 extrapods above desired pods as we have set to 50% 
+      maxUnavailable: 50% #once new pods are up & running then terminate 2 pods
+    type: RollingUpdate
+  template:
+    metadata:
+      name: nginx-demo
+      labels:
+        env:  production
+        app: nginx-prod
+        release: v1.0
+    spec:
+      containers:
+        - name: writer-container
+          image: alpine
+          command: ["/bin/sh"]
+          args: ["-c","echo Hello world > /container-data/index.html; sleep 1d"]
+          volumeMounts:
+            - name: shared-data
+              mountPath: /container-data
+        - name: read-container
+          image: nginx:1.19
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: shared-data
+          emptyDir: {}
