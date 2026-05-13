@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+  labels:
+    app: nginx
+    env: prod
+spec:
+  minReadySeconds: 10
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+      env: prod
+      release: v1.0
+  strategy:
+   type: Recreate #recreate means all pods will be terminated at same time (not used in prod)
+  template:
+    metadata:
+      name: nginx-deploy-pod 
+      labels: 
+        app: nginx
+        env: prod
+        release: v1.0
+    spec:
+      containers:
+        - name: write-container
+          image: alpine
+          command: ["/bin/sh"]
+          args: ["-c", "echo Hello Kubernetes deployment > /my-data/index.html ; sleep 1d"]
+          volumeMounts:
+            - name: shared-data
+              mountPath: /my-data
+        - name: read-container
+          image: nginx:1.19
+          ports: 
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+      volumes:
+        - name: shared-data
+          emptyDir: {}
