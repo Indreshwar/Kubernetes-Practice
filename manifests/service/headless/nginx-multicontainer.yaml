@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+spec:
+  minReadySeconds: 10
+  replicas: 3
+  selector: 
+    matchLabels:
+      app: nginx
+      env: prod
+  template:
+    metadata:
+      name: nginx-container
+      labels:
+        app: nginx
+        env: prod
+        release: v1.0
+    spec:
+      containers:
+        - name: write-container
+          image: alpine
+          command: ["/bin/sh"]
+          args: ["-c","echo welcome to k8 > /pod-data/index.html; sleep 1d"]
+          volumeMounts:
+            - name: shared-data
+              mountPath: /pod-data
+        - name: read-containers
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: shared-data
+          emptyDir: {} 
+  
