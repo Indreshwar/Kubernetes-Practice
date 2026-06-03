@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: prestop 
+spec:
+  terminationGracePeriodSeconds: 10 #pod will not get terminated it will have grace period for 10sec that if we try to delete the pod it will wait for 10sec perform prestop hook
+  containers:
+    - name: web
+      image: nginx
+      lifecycle:
+        preStop: #prestop means it will perform task before the deletion of pod
+          exec:
+            command:
+              - sh
+              - -c 
+              - echo "sleeping-pod " ; sleep 5s
+              
