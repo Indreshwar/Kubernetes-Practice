@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: poststart-pod 
+spec:
+  containers:
+    - name: lifecyclehook
+      image: nginx
+      #life cycle is of type object & lifecycle hooks are postStart ,Prestop,stopSignal
+      lifecycle:
+        postStart: #postStart mean this will be excuted immediately after the creation of the pod
+          exec:
+            command: 
+              - sh
+              - -c 
+              - echo "welocme to k8s" > /usr/share/nginx/html/index.html
+      resources:
+        requests:
+          cpu: 100m 
+          memory: 128Mi 
+        limits:
+          cpu: 500m 
+          memory: 512Mi 
+      ports:
+        - containerPort: 80
+        
