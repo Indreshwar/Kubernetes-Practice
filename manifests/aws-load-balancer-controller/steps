@@ -1,0 +1,25 @@
+1. first we need to create eks cluster
+2. once cluster is created we need to add the node group
+3. once cluster is created we will get OIDC  URL (copy )
+4 go to IAM -->identity provider ->create openIDconnect ->paster OIDC URL & sts.amazonaws.com
+5. to start using provider we need to assign IAM role
+6. create an IAM role and create a policy and assing to the IAM role 
+7. create a serviceaccount (service_account.yaml)
+8  kubectl apply -f service_account.yaml
+9. install helm ->curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 
+                  chmod 700 get_helm.sh
+                  ./get_helm.sh
+10  helm repo add eks https://aws.github.io/eks-charts/
+    helm repo update eks
+helm install command:
+helm install aws-load-balancer-controller eks\aws-load-balancer-controller \
+-n kube-system \
+--set clusterName=my-cluster \
+--set serviceAccount.create=false \
+--set region=ap-south-1 \
+--set vpcId=vpc-02920 \
+--set serviceAccount.name=aws-load-balancer
+
+11 .to verify 
+    kubectl get deploy -n kube-system
+    
